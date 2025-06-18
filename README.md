@@ -18,7 +18,15 @@ Players are shown a series of mysterious images and must decide:
 - Python 3.7+
 - `Pillow` (for image handling)
 
-INSTALL DEPENDENCIES BEFORE OPENING:
-
+## ❗ INSTALL DEPENDENCIES BEFORE OPENING:
 ```bash
 pip install pillow
+```
+## 🌐 Coming soon
+
+- Web version (HTML/CSS/JS)
+
+## ☠️ Disclaimer
+This project is a joke and should not be taken seriously.
+Any resemblance to real ancient civilizations is purely coincidental.
+If you're from Agartha or Hyperborea and reading this — we apologize. Or do we?
