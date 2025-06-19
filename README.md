@@ -37,9 +37,13 @@ You'll be shown a series of questions:
 ```bash
 pip install pillow pygame
 ```
+---
+
 ## 🌐 Coming soon
 
 Web version (HTML/CSS/JS)
+
+---
 
 ## ☠️ Disclaimer
 
