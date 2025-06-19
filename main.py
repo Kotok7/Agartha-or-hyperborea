@@ -1,12 +1,8 @@
-# PLEASE INSTALL PILLOW AND PYGAME BEFORE OPENING
-# pip install pillow pygame
-
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import os
 import random
-import pygame
 
 class ImageQuiz:
     def __init__(self, master, questions):
@@ -25,11 +21,6 @@ class ImageQuiz:
         self.prompt_lbl = tk.Label(master, text="", font=("Arial", 12))
         self.prompt_lbl.pack(pady=5)
 
-        self.volume_scale = tk.Scale(master, from_=0, to=100, orient=tk.HORIZONTAL,
-                                     label="Volume", command=self.set_volume)
-        self.volume_scale.set(50)
-        self.volume_scale.pack(pady=5)
-
         self.img_label = tk.Label(master)
         self.img_label.pack(padx=10, pady=10)
 
@@ -44,9 +35,6 @@ class ImageQuiz:
         self.feedback.pack(pady=5)
 
         self.load_question()
-
-    def set_volume(self, val):
-        pygame.mixer.music.set_volume(float(val) / 100.0)
 
     def load_question(self):
         if self.index >= len(self.questions):
@@ -98,18 +86,10 @@ class ImageQuiz:
     def end_quiz(self):
         messagebox.showinfo("Final Score",
                             f"You got {self.score} out of {len(self.questions)} correct.")
-        pygame.mixer.music.stop()
         self.master.quit()
 
 
 def main():
-    audio_file = 'audio/background.mp3'
-    if os.path.isfile(audio_file):
-        pygame.mixer.init()
-        pygame.mixer.music.load(audio_file)
-        pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(0.5)
-
     all_qs = [
         {'image': 'photos/agartha/agartha1.jpg', 'answer': 'Agartha'},
         {'image': 'photos/agartha/agartha2.jpg', 'answer': 'Agartha'},
