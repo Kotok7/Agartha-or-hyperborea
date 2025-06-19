@@ -1,6 +1,6 @@
 # Agartha or Hyperborea – Image Quiz (Tkinter GUI)
 
-A simple GUI-based image quiz game written in Python using Tkinter, Pillow (PIL), and Pygame.
+A simple GUI-based image quiz game written in Python using Tkinter and Pillow (PIL).
 
 Players are shown a series of mysterious images and must decide:
 
@@ -30,12 +30,11 @@ You'll be shown a series of questions:
 
 - Python 3.7+  
 - Pillow (image handling)  
-- Pygame (background music)
 
 ### ❗ Install dependencies before running:
 
 ```bash
-pip install pillow pygame
+pip install pillow
 ```
 ---
 
