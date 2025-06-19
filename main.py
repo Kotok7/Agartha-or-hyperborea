@@ -1,11 +1,12 @@
-# PLEASE INSTALL PILLOW BEFORE OPENING
-# pip install pillow
+# PLEASE INSTALL PILLOW AND PYGAME BEFORE OPENING
+# pip install pillow pygame
 
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import os
 import random
+import pygame
 
 class ImageQuiz:
     def __init__(self, master, questions):
@@ -21,18 +22,21 @@ class ImageQuiz:
         self.score_lbl = tk.Label(master, text="Score: 0")
         self.score_lbl.pack(pady=2)
 
-        self.prompt_lbl = tk.Label(master, text="Select Agartha or Hyperborea:", font=("Arial", 12))
+        self.prompt_lbl = tk.Label(master, text="", font=("Arial", 12))
         self.prompt_lbl.pack(pady=5)
+
+        self.volume_scale = tk.Scale(master, from_=0, to=100, orient=tk.HORIZONTAL,
+                                     label="Volume", command=self.set_volume)
+        self.volume_scale.set(50)
+        self.volume_scale.pack(pady=5)
 
         self.img_label = tk.Label(master)
         self.img_label.pack(padx=10, pady=10)
 
         btn_frame = tk.Frame(master)
         btn_frame.pack(pady=5)
-        self.btn_a = tk.Button(btn_frame, text="Agartha", width=12,
-                               command=lambda: self.answer("Agartha"))
-        self.btn_b = tk.Button(btn_frame, text="Hyperborea", width=12,
-                               command=lambda: self.answer("Hyperborea"))
+        self.btn_a = tk.Button(btn_frame, width=12)
+        self.btn_b = tk.Button(btn_frame, width=12)
         self.btn_a.pack(side=tk.LEFT, padx=5)
         self.btn_b.pack(side=tk.LEFT, padx=5)
 
@@ -41,19 +45,30 @@ class ImageQuiz:
 
         self.load_question()
 
+    def set_volume(self, val):
+        pygame.mixer.music.set_volume(float(val) / 100.0)
+
     def load_question(self):
         if self.index >= len(self.questions):
             return self.end_quiz()
 
         q = self.questions[self.index]
+        total = len(self.questions)
 
-        self.progress_lbl.config(text=f"Question {self.index+1} of {len(self.questions)}")
+        self.progress_lbl.config(text=f"Question {self.index+1} of {total}")
         self.score_lbl.config(text=f"Score: {self.score}")
 
-        if self.index >= len(self.questions) - 2:
-            self.prompt_lbl.config(text="Is he from Agartha or Hyperborea?")
+        if self.index >= total - 4:
+            if 'agartha/allowed' in q['image'] or 'agartha/not_allowed' in q['image']:
+                self.prompt_lbl.config(text="Is he allowed to Agartha? Yes/No")
+            else:
+                self.prompt_lbl.config(text="Is he allowed to Hyperborea? Yes/No")
+            self.btn_a.config(text="Yes", command=lambda: self.answer("Yes"))
+            self.btn_b.config(text="No", command=lambda: self.answer("No"))
         else:
             self.prompt_lbl.config(text="Select Agartha or Hyperborea:")
+            self.btn_a.config(text="Agartha", command=lambda: self.answer("Agartha"))
+            self.btn_b.config(text="Hyperborea", command=lambda: self.answer("Hyperborea"))
 
         path = q['image']
         if not os.path.isfile(path):
@@ -66,15 +81,12 @@ class ImageQuiz:
         self.img_label.config(image=self.photo)
 
     def answer(self, user_answer):
-        correct_answer = self.questions[self.index]['answer']
-        is_correct = (user_answer == correct_answer)
-        if is_correct:
+        correct = self.questions[self.index]['answer']
+        if user_answer == correct:
             self.score += 1
-
-        self.feedback.config(
-            text="Correct!" if is_correct else "Wrong!",
-            fg="green" if is_correct else "red"
-        )
+            self.feedback.config(text="Correct!", fg="green")
+        else:
+            self.feedback.config(text="Wrong!", fg="red")
 
         self.index += 1
         self.master.after(1000, self.next_step)
@@ -86,28 +98,44 @@ class ImageQuiz:
     def end_quiz(self):
         messagebox.showinfo("Final Score",
                             f"You got {self.score} out of {len(self.questions)} correct.")
+        pygame.mixer.music.stop()
         self.master.quit()
 
+
 def main():
+    audio_file = 'audio/background.mp3'
+    if os.path.isfile(audio_file):
+        pygame.mixer.init()
+        pygame.mixer.music.load(audio_file)
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.5)
+
     all_qs = [
-        {'image': 'photos/agartha1.png',    'answer': 'Agartha'},
-        {'image': 'photos/hyperborea1.jpg', 'answer': 'Hyperborea'},
-        {'image': 'photos/agartha2.webp',   'answer': 'Agartha'},
-        {'image': 'photos/hyperborea2.jpg', 'answer': 'Hyperborea'},
-        {'image': 'photos/agartha3.jpg',    'answer': 'Agartha'},
-        {'image': 'photos/hyperborea3.jpg', 'answer': 'Hyperborea'},
-        {'image': 'photos/agartha4.jpg',    'answer': 'Agartha'},
-        {'image': 'photos/hyperborea4.jpg', 'answer': 'Hyperborea'},
-        {'image': 'photos/agartha5.png',     'answer': 'Agartha'},
-        {'image': 'photos/hyperborea5.jpg',  'answer': 'Hyperborea'},
+        {'image': 'photos/agartha/agartha1.jpg', 'answer': 'Agartha'},
+        {'image': 'photos/agartha/agartha2.jpg', 'answer': 'Agartha'},
+        {'image': 'photos/agartha/agartha3.jpg', 'answer': 'Agartha'},
+        {'image': 'photos/agartha/agartha4.jpg', 'answer': 'Agartha'},
+        {'image': 'photos/agartha/agartha5.jpg', 'answer': 'Agartha'},
+        {'image': 'photos/agartha/agartha6.jpg', 'answer': 'Agartha'},
+        {'image': 'photos/hyperborea/hyperborea1.jpg', 'answer': 'Hyperborea'},
+        {'image': 'photos/hyperborea/hyperborea2.jpg', 'answer': 'Hyperborea'},
+        {'image': 'photos/hyperborea/hyperborea3.jpg', 'answer': 'Hyperborea'},
+        {'image': 'photos/hyperborea/hyperborea4.jpg', 'answer': 'Hyperborea'},
+        {'image': 'photos/hyperborea/hyperborea5.jpg', 'answer': 'Hyperborea'},
+        {'image': 'photos/hyperborea/hyperborea6.jpg', 'answer': 'Hyperborea'},
     ]
-    normal, last_two = all_qs[:-2], all_qs[-2:]
-    random.shuffle(normal)
-    questions = normal + last_two
+    last_four = [
+        {'image': 'photos/agartha/allowed.jpg', 'answer': 'Yes'},
+        {'image': 'photos/agartha/not_allowed.jpg', 'answer': 'No'},
+        {'image': 'photos/hyperborea/allowed.jpg', 'answer': 'Yes'},
+        {'image': 'photos/hyperborea/not_allowed.jpg', 'answer': 'No'},
+    ]
+    random.shuffle(all_qs)
+    questions = all_qs + last_four
 
     root = tk.Tk()
     root.title("Agartha vs Hyperborea Quiz")
-    root.geometry("500x550")
+    root.geometry("500x600")
     ImageQuiz(root, questions)
     root.mainloop()
 
