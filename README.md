@@ -1,32 +1,48 @@
 # Agartha or Hyperborea – Image Quiz (Tkinter GUI)
 
-This is a simple GUI-based image quiz game written in Python using **Tkinter** and **Pillow (PIL)**.  
-Players are shown a series of mysterious images and must decide:  
-**Is it Agartha or Hyperborea?** 🌀
+A simple GUI-based image quiz game written in Python using Tkinter, Pillow (PIL), and Pygame.
 
-## 🧠 How it works
+Players are shown a series of mysterious images and must decide:
 
-- You’ll see a total of **10 questions**:
-  - 8 randomized images
-  - 2 final questions where you must decide **“Is he from Agartha or Hyperborea?”**
-- After each choice, you’ll get **instant feedback** (“Correct!” / “Wrong!”).
-- Your **score** is displayed and updated as you go.
-- Final results appear at the end of the quiz.
+🌀 **Agartha or Hyperborea?**  
+🛑✅ **Is he allowed to enter?**
+
+---
+
+## 🧠 How It Works
+
+You'll be shown a series of questions:
+
+1. **Randomized image questions**  
+   → *"Agartha or Hyperborea?"*
+
+2. **Final 4 fixed questions**  
+   → *"Is he allowed to enter Agartha/Hyperborea? Yes or No"*
+
+- Button labels update dynamically based on the question type  
+- Instant feedback after each answer (*Correct!* / *Wrong!*)  
+- Real-time score updates  
+- Final score displayed at the end
+
+---
 
 ## 📦 Requirements
 
-- Python 3.7+
-- `Pillow` (for image handling)
+- Python 3.7+  
+- Pillow (image handling)  
+- Pygame (background music)
 
-## ❗ INSTALL DEPENDENCIES BEFORE OPENING:
+### ❗ Install dependencies before running:
+
 ```bash
-pip install pillow
+pip install pillow pygame
 ```
 ## 🌐 Coming soon
 
-- Web version (HTML/CSS/JS)
+Web version (HTML/CSS/JS)
 
 ## ☠️ Disclaimer
+
 This project is a joke and should not be taken seriously.
 Any resemblance to real ancient civilizations is purely coincidental.
 If you're from Agartha or Hyperborea and reading this — we apologize. Or do we?
